@@ -73,6 +73,8 @@ def register(username, password, admin):
 #    fund_id = result.fetchone()[0]
 #    return fund_id
 
+
+## This function is vulnerable to SQL-injection like '1'='1' to return faulty items. 
 def fund_id_func(fund_name):
     sql = text(f"""
         SELECT id
