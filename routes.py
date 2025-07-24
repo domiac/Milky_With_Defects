@@ -119,6 +119,8 @@ def deposit():
             flash("Deposit failed", "error")
     return render_template("deposit.html", funds=available_funds)
 
+# Correct version with CSRF token.
+"""
 @app.route("/withdraw", methods=["GET", "POST"])
 def withdraw():
     if "username" not in session:
@@ -141,6 +143,34 @@ def withdraw():
         else:
             flash("Withdrawal failed", "error")
     return render_template("withdraw.html", funds=available_funds_for_account)
+
+"""
+# CSRF PROTECTION REMOVED
+@app.route("/withdraw", methods=["GET", "POST"])
+def withdraw():
+    if "username" not in session:
+        return redirect("/login")
+    available_funds_for_account = user_specified_funds() or []
+    if request.method == "POST":
+        # CSRF protection removed
+        amount = request.form["amount"]
+        try:
+            amount = int(amount)
+        except ValueError:
+            flash("Amount must be an integer", "error")
+            return redirect("/withdraw")
+        fund = request.form["fund"]
+        success = functions.withdraw(session["username"], amount, fund)
+        if success:
+            flash("Withdrawal successful", "success")
+            return redirect("/")
+        else:
+            flash("Withdrawal failed", "error")
+    return render_template("withdraw.html", funds=available_funds_for_account)
+
+
+
+
 
 @app.route("/create_fund", methods=["GET", "POST"])
 def create_fund():
