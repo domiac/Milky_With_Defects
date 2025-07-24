@@ -62,15 +62,27 @@ def register(username, password, admin):
     else:
         return False
 
+### Working correct function without SQL-injection vulnerability
+#def fund_id_func(fund_name):
+#    sql = text("""
+#        SELECT id 
+#        FROM fund 
+#        WHERE fund_name = :fund_name
+#    """)
+#    result = db.session.execute(sql, {"fund_name": fund_name})
+#    fund_id = result.fetchone()[0]
+#    return fund_id
+
 def fund_id_func(fund_name):
-    sql = text("""
-        SELECT id 
-        FROM fund 
-        WHERE fund_name = :fund_name
+    sql = text(f"""
+        SELECT id
+        FROM fund
+        WHERE fund_name = '{fund_name}'
     """)
-    result = db.session.execute(sql, {"fund_name": fund_name})
+    result = db.session.execute(sql)
     fund_id = result.fetchone()[0]
     return fund_id
+
 
 def deposit(username, amount, fund_name):
     if float(amount) < 0:
