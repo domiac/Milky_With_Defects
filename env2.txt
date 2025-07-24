@@ -1,2 +1,1 @@
-DATABASE_URL=postgresql:///tuomasl
 ADMIN_KEY = admin1234
