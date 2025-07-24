@@ -55,6 +55,44 @@ def register():
         else:
             return render_template("error.html", message="Registration failed")
 
+
+
+## Corrected version:
+#@app.route("/deposit", methods=["GET", "POST"])
+"""
+def deposit():
+    if "username" not in session:
+        return redirect("/login")
+    available_funds = all_possible_funds()
+    if request.method == "POST":
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
+        amount = request.form["amount"]
+        if len(amount)>20:
+            flash("Amount must be less then 20 digits", "error")
+            return redirect("/deposit")
+        try:
+            amount = int(amount)
+        except ValueError:
+            flash("Amount must be an integer", "error")
+            return redirect("/deposit")
+        if amount <= 0:
+            flash("Amount must be greater than 0", "error")
+            return redirect("/deposit")
+        fund = request.form["fund"]
+        success = functions.deposit(session["username"], amount, fund)
+        if success:
+            flash("Deposit successful", "success")
+            return redirect("/")
+        else:
+            flash("Deposit failed", "error")
+    return render_template("deposit.html", funds=available_funds)
+"""
+
+
+### This currently is faulty in the try amount int part. if deposit is a large number like:
+### 999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
+## It crashes the server. Poor architecture.
 @app.route("/deposit", methods=["GET", "POST"])
 def deposit():
     if "username" not in session:

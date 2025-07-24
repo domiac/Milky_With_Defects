@@ -85,7 +85,6 @@ def fund_id_func(fund_name):
     fund_id = result.fetchone()[0]
     return fund_id
 
-
 def deposit(username, amount, fund_name):
     if float(amount) < 0:
         return False
