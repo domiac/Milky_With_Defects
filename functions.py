@@ -4,24 +4,47 @@ from flask import session
 from werkzeug.security import check_password_hash, generate_password_hash
 import secrets
 
+
+
+### Correct logIn which checks passwords.
+#def log_in(username, password):
+#    sql = text("""
+#        SELECT id, password 
+#        FROM users 
+#        WHERE username = :username
+#    """)
+#    result = db.session.execute(sql, {"username": username})
+#    user = result.fetchone()
+#
+#    if not user:
+#        return False
+#    else:
+#        if check_password_hash(user.password, password):
+#            session["username"] = username
+#            session["csrf_token"] = secrets.token_hex(16)
+#            return True
+#        else:
+#            return False
+
 def log_in(username, password):
     sql = text("""
-        SELECT id, password 
+        SELECT id 
         FROM users 
         WHERE username = :username
     """)
     result = db.session.execute(sql, {"username": username})
     user = result.fetchone()
 
-    if not user:
-        return False
+    if user:
+        #DOESN'T CHECK FOR CORRECT PASSWORD. 
+        session["username"] = username
+        session["csrf_token"] = secrets.token_hex(16)
+        return True
     else:
-        if check_password_hash(user.password, password):
-            session["username"] = username
-            session["csrf_token"] = secrets.token_hex(16)
-            return True
-        else:
-            return False
+        return False
+
+
+
 
 def register(username, password, admin):
     hash_value = generate_password_hash(password)
